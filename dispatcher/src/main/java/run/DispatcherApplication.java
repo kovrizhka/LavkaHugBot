@@ -1,13 +1,11 @@
-package kovrizhkina.lavkahug;
+package run;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LavkaHugApplication {
-
+public class DispatcherApplication {
     public static void main(String[] args) {
-        SpringApplication.run(LavkaHugApplication.class, args);
+        SpringApplication.run(DispatcherApplication.class);
     }
-
 }
