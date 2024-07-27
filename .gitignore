@@ -1,8 +1,12 @@
 HELP.md
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+/dispatcher/src/main/resources/archetype-resources/
+/dispatcher/src/main/resources/META-INF.maven/
+/dispatcher/src/main/resources/application.properties
 
 ### IntelliJ IDEA ###
 .idea
@@ -12,6 +16,3 @@ target/
 /.mvn/
 /mvnw
 /mvnw.cmd
-/dispatcher/src/main/resources/archetype-resources/
-/dispatcher/src/main/resources/META-INF/maven/
-/dispatcher/src/main/resources/application.properties
