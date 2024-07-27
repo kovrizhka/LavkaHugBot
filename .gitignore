@@ -12,4 +12,6 @@ target/
 /.mvn/
 /mvnw
 /mvnw.cmd
-/logs/
+/dispatcher/src/main/resources/archetype-resources/
+/dispatcher/src/main/resources/META-INF/maven/
+/dispatcher/src/main/resources/application.properties
