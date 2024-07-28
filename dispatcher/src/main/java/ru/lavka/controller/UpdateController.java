@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.lavka.model.RabbitQueue;
+import ru.lavka.service.UpdateProducer;
 import ru.lavka.utils.MessageUtils;
 
 @Component
@@ -12,9 +14,11 @@ import ru.lavka.utils.MessageUtils;
 public class UpdateController {
     private TelegramBot telegramBot;
     private MessageUtils messageUtils;
+    private final UpdateProducer updateProducer;
 
-    public UpdateController(MessageUtils messageUtils) {
+    public UpdateController(MessageUtils messageUtils, UpdateProducer updateProducer) {
         this.messageUtils = messageUtils;
+        this.updateProducer = updateProducer;
     }
 
     public void registerBot(TelegramBot telegramBot) {
@@ -25,7 +29,7 @@ public class UpdateController {
     /**
      * Метод запускает валидацию апдейта, полученного от пользователя
      */
-    private void processUpdate(Update update) {
+    public void processUpdate(Update update) {
         if (update == null) {
             log.error("Update is null");
             return;
@@ -37,7 +41,6 @@ public class UpdateController {
             log.error("Update has no text, or invalid text");
         }
     }
-
 
     /**
      * Метод распределяет апдейт в зависимости от типа сообщения
@@ -68,8 +71,24 @@ public class UpdateController {
      * Метод запускает обработку текстового сообщения
      */
     private void processTextMessage(Update update) {
+        updateProducer.produce(RabbitQueue.TEXT_MESSAGE_UPDATE, update);
     }
 
+    /**
+     * Метод запускает обработку документа
+     */
     private void processDocumentMessage(Update update) {
+        updateProducer.produce(RabbitQueue.DOC_MESSAGE_UPDATE, update);
+        sendDontWorryMessage(update);
+    }
+
+    /**
+     * Метод отправляет сообщение о начале процесса обработки
+     */
+    private void sendDontWorryMessage(Update update) {
+        String answerText = "Данные отправлены на обработку...";
+        SendMessage unsupportedMessage = messageUtils.generateSendMessageWithText(update, answerText);
+
+        sendAnswerThroughBot(unsupportedMessage);
     }
 }
