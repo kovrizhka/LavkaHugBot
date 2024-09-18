@@ -13,7 +13,7 @@ import ru.lavka.utils.MessageUtils;
 @Log4j
 public class UpdateController {
     private TelegramBot telegramBot;
-    private MessageUtils messageUtils;
+    private final MessageUtils messageUtils;
     private final UpdateProducer updateProducer;
 
     public UpdateController(MessageUtils messageUtils, UpdateProducer updateProducer) {
