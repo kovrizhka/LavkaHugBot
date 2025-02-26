@@ -6,17 +6,9 @@
         <artifactId>LavkaHug</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>dispatcher</artifactId>
-    <name>Archetype - dispatcher</name>
+    <artifactId>node</artifactId>
+    <name>Archetype - node</name>
     <url>http://maven.apache.org</url>
-
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.targer>17</maven.compiler.targer>
-<!--        <telegrambot.starter.version>5.0.1</telegrambot.starter.version>-->
-        <telegram.version>6.9.7.1</telegram.version>
-    </properties>
-
 
     <dependencies>
         <dependency>
