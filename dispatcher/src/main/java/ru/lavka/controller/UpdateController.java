@@ -60,10 +60,10 @@ public class UpdateController {
         String answerText = "Вы отправили сообщение с временно неподдерживаемым типом данных.";
         SendMessage unsupportedMessage = messageUtils.generateSendMessageWithText(update, answerText);
 
-        sendAnswerThroughBot(unsupportedMessage);
+        setView(unsupportedMessage);
     }
 
-    private void sendAnswerThroughBot(SendMessage sendMessage) {
+    public void setView(SendMessage sendMessage) {
         telegramBot.sendAnswerMessage(sendMessage);
     }
 
@@ -89,6 +89,6 @@ public class UpdateController {
         String answerText = "Данные отправлены на обработку...";
         SendMessage unsupportedMessage = messageUtils.generateSendMessageWithText(update, answerText);
 
-        sendAnswerThroughBot(unsupportedMessage);
+        setView(unsupportedMessage);
     }
 }
