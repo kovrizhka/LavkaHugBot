@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.lavka.model.RabbitQueue;
 import ru.lavka.service.ConsumerService;
+import ru.lavka.service.MainService;
 import ru.lavka.service.ProducerService;
 
 import static ru.lavka.model.RabbitQueue.DOC_MESSAGE_UPDATE;
@@ -17,23 +18,17 @@ import static ru.lavka.model.RabbitQueue.TEXT_MESSAGE_UPDATE;
 @Log4j
 public class ConsumerServiceImpl implements ConsumerService {
 
-    private final ProducerService producerService;
+    private final MainService mainService;
 
-    public ConsumerServiceImpl(ProducerService producerService) {
-        this.producerService = producerService;
+    public ConsumerServiceImpl(MainService mainService) {
+        this.mainService = mainService;
     }
 
     @Override
     @RabbitListener(queues = TEXT_MESSAGE_UPDATE)
     public void consumeTextMessageUpdate(Update update) {
         log.debug("NODE: Text message received");
-
-        Message recievedMessage = update.getMessage();
-        SendMessage answerMessage = new SendMessage();
-        answerMessage.setChatId(recievedMessage.getChatId().toString());
-        answerMessage.setText("Hello from NODE!");
-
-        producerService.produceAnswer(answerMessage);
+        mainService.processTextMessage(update);
     }
 
     @Override
