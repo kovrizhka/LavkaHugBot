@@ -27,4 +27,12 @@ public class RawData {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private Update event;
+
+    @Override
+    public String toString() {
+        return "RawData{" +
+                "id=" + id +
+                ", event=" + event +
+                '}';
+    }
 }

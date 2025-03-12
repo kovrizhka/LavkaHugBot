@@ -1,20 +1,21 @@
 package ru.lavka.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import ru.lavka.dao.RawDataDAO;
+import ru.lavka.dao.RawDataDao;
 import ru.lavka.entity.RawData;
 import ru.lavka.service.MainService;
 import ru.lavka.service.ProducerService;
 
 @Service
 public class MainServiceImpl implements MainService {
-    private final RawDataDAO rawDataDAO;
+    private final RawDataDao rawDataDAO;
     private final ProducerService producerService;
 
-    public MainServiceImpl(RawDataDAO rawDataDAO, ProducerService producerService) {
+    public MainServiceImpl(RawDataDao rawDataDAO, ProducerService producerService) {
         this.rawDataDAO = rawDataDAO;
         this.producerService = producerService;
     }

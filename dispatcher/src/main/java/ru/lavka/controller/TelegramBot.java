@@ -33,16 +33,16 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         updateController.processUpdate(update);
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            System.out.println("Сообщение получено");
-            String chatId = update.getMessage().getChatId().toString();
-            String text = update.getMessage().getText();
-            log.debug("Сообщение из чата: " + chatId + ": " + text);
-
-            SendMessage response = new SendMessage(chatId, "Привет от Полины :P");
-
-            sendAnswerMessage(response);
-        }
+//        if (update.hasMessage() && update.getMessage().hasText()) {
+//            System.out.println("Сообщение получено");
+//            String chatId = update.getMessage().getChatId().toString();
+//            String text = update.getMessage().getText();
+//            log.debug("Сообщение из чата: " + chatId + ": " + text);
+//
+//            SendMessage response = new SendMessage(chatId, "Привет от Полины :P");
+//
+//            sendAnswerMessage(response);
+//        }
     }
 
     @Override

@@ -68,7 +68,8 @@ public class UpdateController {
     }
 
     /**
-     * Метод запускает обработку текстового сообщения
+     * Метод запускает обработку текстового сообщения.
+     * Закидывает его в брокер.
      */
     private void processTextMessage(Update update) {
         updateProducer.produce(RabbitQueue.TEXT_MESSAGE_UPDATE, update);
