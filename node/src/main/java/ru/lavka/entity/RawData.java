@@ -2,15 +2,15 @@ package ru.lavka.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@Data
+//@Data не нужно, потому что генерит хэшкод по id, которого ещё нет
+@Getter
+@Setter
+@EqualsAndHashCode(exclude = "id")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
