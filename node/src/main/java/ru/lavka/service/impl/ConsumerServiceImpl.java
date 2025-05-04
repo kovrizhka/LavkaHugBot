@@ -11,8 +11,7 @@ import ru.lavka.service.ConsumerService;
 import ru.lavka.service.MainService;
 import ru.lavka.service.ProducerService;
 
-import static ru.lavka.model.RabbitQueue.DOC_MESSAGE_UPDATE;
-import static ru.lavka.model.RabbitQueue.TEXT_MESSAGE_UPDATE;
+import static ru.lavka.model.RabbitQueue.*;
 
 @Service
 @Log4j
@@ -35,5 +34,13 @@ public class ConsumerServiceImpl implements ConsumerService {
     @RabbitListener(queues = DOC_MESSAGE_UPDATE)
     public void consumeDocMessageUpdate(Update update) {
         log.debug("NODE: Doc message received");
+        mainService.processDocMessage(update);
+    }
+
+    @Override
+    @RabbitListener(queues = PHOTO_MESSAGE_UPDATE)
+    public void consumePhotoMessageUpdate(Update update) {
+        log.debug("NODE: Photo message received");
+        mainService.processPhotoMessage(update);
     }
 }

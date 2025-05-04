@@ -4,7 +4,7 @@ import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import ru.lavka.entity.enums.UserState;
+import ru.lavka.entity.enums.UserStateEnum;
 
 import java.time.LocalDateTime;
 
@@ -33,5 +33,5 @@ public class AppUser {
     private Boolean isActivated;
 
     @Enumerated(EnumType.STRING)
-    private UserState userState;
+    private UserStateEnum userStateEnum;
 }

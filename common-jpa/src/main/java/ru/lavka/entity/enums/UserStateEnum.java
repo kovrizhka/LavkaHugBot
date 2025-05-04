@@ -1,6 +1,6 @@
 package ru.lavka.entity.enums;
 
-public enum UserState {
-    ACTIVATED,
+public enum UserStateEnum {
+    BASIC_STATE,
     WAITING_FOR_EMAIL,
 }
