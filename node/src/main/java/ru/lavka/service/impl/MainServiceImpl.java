@@ -1,15 +1,18 @@
 package ru.lavka.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import ru.lavka.dao.AppUserDAO;
 import ru.lavka.dao.RawDataDao;
+import ru.lavka.entity.AppDocument;
 import ru.lavka.entity.AppUser;
 import ru.lavka.entity.RawData;
 import ru.lavka.entity.enums.UserStateEnum;
+import ru.lavka.service.FileService;
 import ru.lavka.service.MainService;
 import ru.lavka.service.ProducerService;
 import ru.lavka.service.enums.ServiceCommandsEnum;
@@ -20,11 +23,13 @@ public class MainServiceImpl implements MainService {
     private final RawDataDao rawDataDAO;
     private final ProducerService producerService;
     private final AppUserDAO appUserDAO;
+    private final FileService fileService;
 
-    public MainServiceImpl(RawDataDao rawDataDAO, ProducerService producerService, AppUserDAO appUserDAO) {
+    public MainServiceImpl(RawDataDao rawDataDAO, ProducerService producerService, AppUserDAO appUserDAO, FileService fileService) {
         this.rawDataDAO = rawDataDAO;
         this.producerService = producerService;
         this.appUserDAO = appUserDAO;
+        this.fileService = fileService;
     }
 
     @Override
@@ -35,7 +40,8 @@ public class MainServiceImpl implements MainService {
         var text = update.getMessage().getText();
         var output = "";
 
-        if (ServiceCommandsEnum.CANCEL.equals(text)) {
+        var serviceCommand = ServiceCommandsEnum.fromCmd(text);
+        if (ServiceCommandsEnum.CANCEL.equals(serviceCommand)) {
             output = cancelProcess(appUser);
         } else if (userState.equals(UserStateEnum.BASIC_STATE)) {
             output = processServiceCommands(appUser, text);
@@ -82,7 +88,23 @@ public class MainServiceImpl implements MainService {
 
     @Override
     public void processDocMessage(Update update) {
-//TODO тут как для фото наверно
+        saveRawData(update);
+        var appUser = findOrSaveAppUser(update);
+        var chatId = update.getMessage().getChatId();
+        if (isNotAllowToSendContent(chatId, appUser)) {
+            return;
+        }
+
+        try {
+            AppDocument doc = fileService.processDoc(update.getMessage());
+            //TODO добавить генерацию ссылки для скачивания
+            var answer = "Документ успешно загружен, ссылку я конечно же не скину :)";
+            sendAnswer(chatId, answer);
+        } catch (FileUploadException e) {
+            log.error(e.getMessage(), e);
+            var errorMessage = "К сожаления, не удалось загрузить файл. Попробуйте позже.";
+            sendAnswer(chatId, errorMessage);
+        }
     }
 
     private void sendAnswer(Long chatId, String output) {
@@ -93,12 +115,13 @@ public class MainServiceImpl implements MainService {
     }
 
     private String processServiceCommands(AppUser appUser, String text) {
-        if (ServiceCommandsEnum.REGISTRATION.equals(text)) {
+        var cmd = ServiceCommandsEnum.fromCmd(text);
+        if (ServiceCommandsEnum.REGISTRATION.equals(cmd)) {
             //TODO ДОДЕЛАТЬ
             return "Временно недоступна";
-        } else if (ServiceCommandsEnum.HELP.equals(text)) {
+        } else if (ServiceCommandsEnum.HELP.equals(cmd)) {
             return help();
-        } else if (ServiceCommandsEnum.START.equals(text)) {
+        } else if (ServiceCommandsEnum.START.equals(cmd)) {
             return "Привет в магазинчике! Чтобы посмотреть список доступных команд введите /help";
         } else {
             return "Неизвестная команда! Чтобы посмотреть список доступных команд введите /help";

@@ -17,6 +17,5 @@ target/
 /mvnw
 /mvnw.cmd
 /dispatcher/src/main/resources/META-INF/maven/archetype.xml
-/dispatcher/src/main/resources/
 /common-rabbitmq/src/main/resources/
 /node/src/main/resources/

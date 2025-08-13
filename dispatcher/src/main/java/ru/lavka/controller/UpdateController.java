@@ -35,7 +35,7 @@ public class UpdateController {
             return;
         }
 
-        if (update.hasMessage() && update.getMessage().hasText()) {
+        if (update.hasMessage() || update.getMessage().hasText()) {
             distributeMessagesByType(update);
         } else {
             log.error("Update has no text, or invalid text");
