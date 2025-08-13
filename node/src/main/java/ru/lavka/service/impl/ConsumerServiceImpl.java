@@ -1,6 +1,7 @@
 package ru.lavka.service.impl;
 
 import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -14,7 +15,7 @@ import ru.lavka.service.ProducerService;
 import static ru.lavka.model.RabbitQueue.*;
 
 @Service
-@Log4j
+@Log4j2
 public class ConsumerServiceImpl implements ConsumerService {
 
     private final MainService mainService;

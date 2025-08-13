@@ -1,5 +1,6 @@
 package ru.lavka.service.impl;
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.json.JSONObject;
 import lombok.extern.log4j.Log4j;
@@ -21,7 +22,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @Service
-@Log4j
+@Log4j2
 public class FileServiceImpl implements FileService {
 
     @Value("${bot.token}")
