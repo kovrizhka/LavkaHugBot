@@ -51,6 +51,8 @@ public class UpdateController {
             processTextMessage(update);
         } else if (message.hasDocument()) {
             processDocumentMessage(update);
+        } else if (message.hasPhoto()) {
+            processPhotoMessage(update);
         } else {
             handleUnsupportedMessage(update);
         }
@@ -83,13 +85,16 @@ public class UpdateController {
         sendDontWorryMessage(update);
     }
 
+    private void processPhotoMessage(Update update) {
+        updateProducer.produce(RabbitQueue.PHOTO_MESSAGE_UPDATE, update);
+    }
+
     /**
      * Метод отправляет сообщение о начале процесса обработки
      */
     private void sendDontWorryMessage(Update update) {
         String answerText = "Данные отправлены на обработку...";
-        SendMessage unsupportedMessage = messageUtils.generateSendMessageWithText(update, answerText);
-
-        setView(unsupportedMessage);
+        SendMessage dontWorryMessage = messageUtils.generateSendMessageWithText(update, answerText);
+        setView(dontWorryMessage);
     }
 }

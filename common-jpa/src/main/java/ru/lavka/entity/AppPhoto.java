@@ -11,11 +11,16 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "binary_content")
+@Table(name = "app_photo")
 @Convert(attributeName = "jsonb", converter = JsonBinaryType.class)
-public class BinaryContent {
+public class AppPhoto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private byte[] fileAsArrayOfBytes;
+    private String telegramFileId;
+
+    @OneToOne
+    private BinaryContent binaryContent;
+    private Integer fileSize;
 }

@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.User;
 import ru.lavka.dao.AppUserDAO;
 import ru.lavka.dao.RawDataDao;
 import ru.lavka.entity.AppDocument;
+import ru.lavka.entity.AppPhoto;
 import ru.lavka.entity.AppUser;
 import ru.lavka.entity.RawData;
 import ru.lavka.entity.enums.UserStateEnum;
@@ -66,9 +67,15 @@ public class MainServiceImpl implements MainService {
             return;
         }
 
-        //TODO добавить какую-то обработку
-        var answer = "Фото получено, собираю данные...";
-        sendAnswer(chatId, answer);
+        try {
+            AppPhoto photo = fileService.processPhoto(update.getMessage());
+            var answer = "Фото получено, собираю данные...";
+            sendAnswer(chatId, answer);
+        } catch (FileUploadException e) {
+            log.error(e.getMessage());
+            var errorMessage = "К сожалению, не удалось загрузить фото. Попробуйте позже.";
+            sendAnswer(chatId, errorMessage);
+        }
     }
 
     //TODO переделать логику (убрать Not и изменить return'ы)
@@ -102,7 +109,7 @@ public class MainServiceImpl implements MainService {
             sendAnswer(chatId, answer);
         } catch (FileUploadException e) {
             log.error(e.getMessage(), e);
-            var errorMessage = "К сожаления, не удалось загрузить файл. Попробуйте позже.";
+            var errorMessage = "К сожалению, не удалось загрузить файл. Попробуйте позже.";
             sendAnswer(chatId, errorMessage);
         }
     }
