@@ -9,4 +9,17 @@
     <artifactId>common-rabbitmq</artifactId>
     <name>Archetype - common-rabbitmq</name>
     <url>http://maven.apache.org</url>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

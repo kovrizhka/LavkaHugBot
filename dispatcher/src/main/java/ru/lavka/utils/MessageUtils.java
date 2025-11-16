@@ -12,12 +12,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class MessageUtils {
 
     public SendMessage generateSendMessageWithText(Update update, String text) {
-        SendMessage sendMessage = new SendMessage();
 
         long chatId = update.getMessage().getChatId();
 
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(text);
+        SendMessage sendMessage = new SendMessage(String.valueOf(chatId), text);
+//        sendMessage.setChatId(chatId);
+//        sendMessage.setText(text);
 
         return sendMessage;
     }
