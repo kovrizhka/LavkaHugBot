@@ -21,13 +21,16 @@ public class UpdateController {
         this.updateProducer = updateProducer;
     }
 
+    /**
+     * Метод просто внедряет бота сюда в контроллер
+     */
     public void registerBot(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
     }
 
 
     /**
-     * Метод запускает валидацию апдейта, полученного от пользователя
+     * Метод валидирует апдейт, полученного от пользователя и шлёт дальше на сортировку.
      */
     public void processUpdate(Update update) {
         if (update == null) {
@@ -69,17 +72,17 @@ public class UpdateController {
         telegramBot.sendAnswerMessage(sendMessage);
     }
 
-    /**
-     * Метод запускает обработку текстового сообщения.
+
+    /*ОБРАБОТКИ СООБЩЕНИЙ НИЖЕ
+     *
      * Закидывает его в брокер.
-     */
+     * Далее работа переходит в модуль Node, там слушаются очереди брокера.
+     * */
+
     private void processTextMessage(Update update) {
         updateProducer.produce(RabbitQueue.TEXT_MESSAGE_UPDATE, update);
     }
 
-    /**
-     * Метод запускает обработку документа
-     */
     private void processDocumentMessage(Update update) {
         updateProducer.produce(RabbitQueue.DOC_MESSAGE_UPDATE, update);
         sendDontWorryMessage(update);
@@ -89,9 +92,6 @@ public class UpdateController {
         updateProducer.produce(RabbitQueue.PHOTO_MESSAGE_UPDATE, update);
     }
 
-    /**
-     * Метод отправляет сообщение о начале процесса обработки
-     */
     private void sendDontWorryMessage(Update update) {
         String answerText = "Данные отправлены на обработку...";
         SendMessage dontWorryMessage = messageUtils.generateSendMessageWithText(update, answerText);

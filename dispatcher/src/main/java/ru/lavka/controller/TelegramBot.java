@@ -29,7 +29,7 @@ public class TelegramBot implements LongPollingSingleThreadUpdateConsumer {
     @Value("${bot.token}")
     private String botToken;
 
-    private UpdateController updateController;
+    private final UpdateController updateController;
 
     public TelegramBot(UpdateController updateController) {
         this.updateController = updateController;
@@ -41,42 +41,20 @@ public class TelegramBot implements LongPollingSingleThreadUpdateConsumer {
         updateController.registerBot(this);
     }
 
-//    @Override
-    public void onUpdateReceived(Update update) {
-        updateController.processUpdate(update);
-//        if (update.hasMessage() && update.getMessage().hasText()) {
-//            System.out.println("Сообщение получено");
-//            String chatId = update.getMessage().getChatId().toString();
-//            String text = update.getMessage().getText();
-//            log.debug("Сообщение из чата: " + chatId + ": " + text);
-//
-//            SendMessage response = new SendMessage(chatId, "Привет от Полины :P");
-//
-//            sendAnswerMessage(response);
-//        }
-    }
-
-//    @Override
-    public String getBotUsername() {
-        return botName;
-    }
-//
-//    @Override
-//    public String getBotToken() {
-//        return botToken;
-//    }
-
     public void sendAnswerMessage(SendMessage message) {
         if (message != null) {
             try {
                 telegramClient.execute(message);
-//                execute(message);
             } catch (TelegramApiException e) {
                 log.error(e);
             }
         }
     }
 
+    /**
+     * Самый первый метод куда что-то приходит из бота.
+     * @param update это сообщение или любое другое действие от пользователя, адресованное боту.
+     */
     @Override
     public void consume(Update update) {
         updateController.processUpdate(update);
